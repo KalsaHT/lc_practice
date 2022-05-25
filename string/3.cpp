@@ -1,10 +1,36 @@
+/*
+ * @Author: httermin
+ * @Date: 2019-09-09 23:37:52
+ */
 #include<string>
 #include<iostream>
 #include <unordered_map>
 
 using namespace std;
 
-class Solution {
+class Solution3 {
+public:
+    int lengthOfLongestSubstring(string s) {
+        unordered_map<char, int> mymap;
+
+        int maxLength = 0;
+        int startIdx = -1;
+
+        for(int i=0; i<s.size();i++){
+            
+            if(mymap.find(s[i])!=mymap.end()){
+                startIdx = max(mymap[s[i]], startIdx);
+                
+            }
+            cout<<startIdx<<endl;
+            mymap[s[i]] = i;
+            maxLength = max(maxLength, i - startIdx);
+        }
+        return maxLength;
+    }
+};
+
+class SolutionOLD {
 public:
     int lengthOfLongestSubstring(string s) {
         unordered_map<char, int> mymap;
@@ -26,3 +52,10 @@ public:
         return max_len; 
     }
 };
+
+int main(){
+    string s = "pwwkew";
+    Solution3 ss;
+    cout<<ss.lengthOfLongestSubstring(s)<<endl;
+    return -1;
+}

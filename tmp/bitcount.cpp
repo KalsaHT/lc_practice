@@ -17,6 +17,7 @@ int BitCount(unsigned int n)
 
 int main(){
     int a = 5;
+    cout<<1;
     if((2 &1) == 1) cout<<1;
     return -1;
 }

@@ -1,8 +1,120 @@
+/*
+ * @Author: httermin
+ * @Date: 2019-09-09 23:37:52
+ */
 #include<string>
 #include<iostream>
 #include<vector>
 
 using namespace std;
+
+class Solution5{
+public:
+    string longestPalindrome(string s) {
+        int n = s.length();
+        int maxBegin = 0;
+        int maxLen = 1;
+        bool table[1000][1000] = {false};
+
+        for (int i = 0; i < n; i++) {
+            table[i][i] = true;
+        }
+
+        for (int i = 0; i < n-1; i++) {
+                if (s[i] == s[i+1]) {
+                table[i][i+1] = true;
+                maxBegin = i;
+                maxLen = 2;
+            }
+        }
+        for (int len = 3; len <= n; len++) {
+            for (int i = 0; i < n-len+1; i++) {
+                int j = i+len-1;
+                if (s[i] == s[j] && table[i+1][j-1]) {
+                    table[i][j] = true;
+                    maxBegin = i;
+                    maxLen = len;
+                }
+            }
+        }
+        return s.substr(maxBegin, maxLen);
+    }
+};
+
+class Solution {
+    //dynamic progame
+public:
+    string longestPalindrome(string s) {
+        int n = s.size();
+        if(n == 0) return s;
+        bool table[n][n]={false};
+        
+        int maxLens = 1, begin=0;
+
+        //initialize diagonal line and t[i][i+1]
+        for (int i=0; i<n; i++){
+            table[i][i] = true;
+            if(i < n-1){
+                if(s[i] == s[i+1]){
+                    table[i][i+1] = true;
+                    maxLens = 2;
+                    begin = i;
+                }
+            }
+        }
+        
+        int j;
+        // start with length 3
+        for(int lens=3; lens<=n; lens++){
+            for(int i=0; i<n + 1-lens; i++){
+                j = i  + lens - 1;
+                // cout<<j<<" "<<i<<endl;
+
+                if(s[i] == s[j] && table[i+1][j-1]){
+                    table[i][j] = true;
+                    begin = i;
+                    maxLens = lens;
+                    }
+            }
+        }
+        return s.substr(begin, maxLens);
+        
+    }
+};
+
+class Solution4 {
+public:
+    string longestPalindrome(string s) {
+        int start = 0;
+        int end = 0;
+        
+        int len1;
+        int len2;
+        int len;
+        for(int i=0; i<s.size(); i++){
+            len1 = getLongestLength(s, i, i);
+            len2 = getLongestLength(s, i, i+1);
+            len = max(len1, len2);
+            
+            if(len > (end - start + 1)){
+                end = i + len/2;
+                start = end - len + 1;
+                cout<<start<<" "<<len<<" "<<i<<" "<<end<<endl;
+            }
+        }
+        cout<<start<<" "<<end<<endl;
+        return s.substr(start, end - start + 1);
+    }
+
+    int getLongestLength(string s, int left, int right){
+        
+        while(left>=0 && right<s.size() && s[left] == s[right]){
+            left--;
+            right++;
+        }
+        return right - left - 1;
+    }
+};
 
 class Solution2 {
 public:
@@ -43,7 +155,7 @@ public:
         return new_string;
     }
 };
-class Solution {  
+class Solution3 {  
 public:  
     string longestPalindrome(string s) {  
         const int len = s.size();  
@@ -93,7 +205,7 @@ public:
 };  
 
 int main(){
-    string s = "abba";
+    string s = "ccc";
     Solution ss;
     cout<<ss.longestPalindrome(s)<<endl;
     return -1;
